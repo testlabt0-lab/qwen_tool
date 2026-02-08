@@ -1,0 +1,135 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}تفاصيل المريض - {{ patient.first_name }} {{ patient.last_name }}{% endblock %}
+
+{% block header %}تفاصيل المريض - {{ patient.first_name }} {{ patient.last_name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-user"></i> معلومات المريض</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <td><strong>كود المريض:</strong></td>
+                        <td>{{ patient.patient_id }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الاسم:</strong></td>
+                        <td>{{ patient.first_name }} {{ patient.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الجنس:</strong></td>
+                        <td>{{ patient.get_gender_display }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>تاريخ الميلاد:</strong></td>
+                        <td>{{ patient.birth_date }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>رقم الهاتف:</strong></td>
+                        <td>{{ patient.phone_number }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>العنوان:</strong></td>
+                        <td>{{ patient.address }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>البريد الإلكتروني:</strong></td>
+                        <td>{{ patient.email }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>تاريخ الإنشاء:</strong></td>
+                        <td>{{ patient.created_at }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-stethoscope"></i> السجلات الطبية</h5>
+            </div>
+            <div class="card-body">
+                {% if medical_records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>الطبيب</th>
+                                <th>التاريخ</th>
+                                <th>التشخيص</th>
+                                <th>العلاج</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in medical_records %}
+                            <tr>
+                                <td>{{ record.doctor }}</td>
+                                <td>{{ record.created_at }}</td>
+                                <td>{{ record.diagnosis|truncatewords:10 }}</td>
+                                <td>{{ record.treatment|truncatewords:10 }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-info">عرض التفاصيل</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p>لا توجد سجلات طبية لهذا المريض.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-calendar-check"></i> المواعيد</h5>
+            </div>
+            <div class="card-body">
+                {% if appointments %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>كود الموعد</th>
+                                <th>الطبيب</th>
+                                <th>التاريخ</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.appointment_id }}</td>
+                                <td>{{ appointment.doctor }}</td>
+                                <td>{{ appointment.appointment_date }}</td>
+                                <td>
+                                    <span class="badge bg-{% if appointment.status == 'SCHEDULED' %}warning{% elif appointment.status == 'COMPLETED' %}success{% else %}danger{% endif %}">
+                                        {{ appointment.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'appointment_detail' appointment.appointment_id %}" class="btn btn-sm btn-outline-primary">عرض</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p>لا توجد مواعيد مسجلة لهذا المريض.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

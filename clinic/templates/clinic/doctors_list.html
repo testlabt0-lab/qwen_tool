@@ -1,0 +1,54 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}قائمة الأطباء - نظام إدارة المستوصف{% endblock %}
+
+{% block header %}قائمة الأطباء{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-user-md"></i> جميع الأطباء</h5>
+                <button class="btn btn-primary"><i class="fas fa-plus"></i> إضافة طبيب جديد</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>كود الطبيب</th>
+                                <th>الاسم</th>
+                                <th>التخصص</th>
+                                <th>رقم الهاتف</th>
+                                <th>رخصة الممارسة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for doctor in doctors %}
+                            <tr>
+                                <td>{{ doctor.doctor_id }}</td>
+                                <td>{{ doctor.get_full_name }}</td>
+                                <td>{{ doctor.specialization }}</td>
+                                <td>{{ doctor.phone_number }}</td>
+                                <td>{{ doctor.license_number }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary">عرض</button>
+                                    <button class="btn btn-sm btn-outline-success">تعديل</button>
+                                    <button class="btn btn-sm btn-outline-danger">حذف</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center">لا توجد بيانات</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

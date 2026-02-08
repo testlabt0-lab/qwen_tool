@@ -1,0 +1,60 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}قائمة المواعيد - نظام إدارة المستوصف{% endblock %}
+
+{% block header %}قائمة المواعيد{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5><i class="fas fa-calendar-check"></i> جميع المواعيد</h5>
+                <button class="btn btn-primary"><i class="fas fa-plus"></i> حجز موعد جديد</button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>كود الموعد</th>
+                                <th>المريض</th>
+                                <th>الطبيب</th>
+                                <th>تاريخ الموعد</th>
+                                <th>السبب</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in appointments %}
+                            <tr>
+                                <td>{{ appointment.appointment_id }}</td>
+                                <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
+                                <td>{{ appointment.doctor.get_full_name }}</td>
+                                <td>{{ appointment.appointment_date }}</td>
+                                <td>{{ appointment.reason|truncatewords:10 }}</td>
+                                <td>
+                                    <span class="badge bg-{% if appointment.status == 'SCHEDULED' %}warning{% elif appointment.status == 'COMPLETED' %}success{% else %}danger{% endif %}">
+                                        {{ appointment.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'appointment_detail' appointment.appointment_id %}" class="btn btn-sm btn-outline-primary">عرض</a>
+                                    <button class="btn btn-sm btn-outline-success">تعديل</button>
+                                    <button class="btn btn-sm btn-outline-danger">حذف</button>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center">لا توجد بيانات</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

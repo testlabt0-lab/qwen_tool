@@ -1,0 +1,51 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}لوحة التحكم - نظام إدارة المستوصف{% endblock %}
+
+{% block header %}لوحة التحكم{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card counter-card bg-primary text-white">
+            <div class="counter-number">{{ patients_count }}</div>
+            <div class="counter-title">المرضى</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card counter-card bg-success text-white">
+            <div class="counter-number">{{ doctors_count }}</div>
+            <div class="counter-title">الأطباء</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card counter-card bg-info text-white">
+            <div class="counter-number">{{ appointments_count }}</div>
+            <div class="counter-title">المواعيد</div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-users"></i> أحدث المرضى</h5>
+            </div>
+            <div class="card-body">
+                <p>سيتم عرض قائمة بأحدث المرضى المسجلين</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-calendar-check"></i> أحدث المواعيد</h5>
+            </div>
+            <div class="card-body">
+                <p>سيتم عرض قائمة بأحدث المواعيد المحجوزة</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'clinic/base.html' %}
+
+{% block title %}تفاصيل الموعد - {{ appointment.appointment_id }}{% endblock %}
+
+{% block header %}تفاصيل الموعد - {{ appointment.appointment_id }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-calendar-check"></i> معلومات الموعد</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless">
+                    <tr>
+                        <td><strong>كود الموعد:</strong></td>
+                        <td>{{ appointment.appointment_id }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>المريض:</strong></td>
+                        <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الطبيب:</strong></td>
+                        <td>{{ appointment.doctor.get_full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>تاريخ ووقت الموعد:</strong></td>
+                        <td>{{ appointment.appointment_date }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>السبب:</strong></td>
+                        <td>{{ appointment.reason }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الحالة:</strong></td>
+                        <td>
+                            <span class="badge bg-{% if appointment.status == 'SCHEDULED' %}warning{% elif appointment.status == 'COMPLETED' %}success{% else %}danger{% endif %}">
+                                {{ appointment.get_status_display }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>ملاحظات:</strong></td>
+                        <td>{{ appointment.notes|default:"لا توجد ملاحظات" }}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>تاريخ الإنشاء:</strong></td>
+                        <td>{{ appointment.created_at }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-tools"></i> الإجراءات</h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-success w-100 mb-2">إكمال الموعد</button>
+                <button class="btn btn-warning w-100 mb-2">إعادة جدولة</button>
+                <button class="btn btn-danger w-100 mb-2">إلغاء الموعد</button>
+                <button class="btn btn-info w-100">إنشاء سجل طبي</button>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5><i class="fas fa-user-injured"></i> معلومات المريض</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>الاسم:</strong> {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</p>
+                <p><strong>الجنس:</strong> {{ appointment.patient.get_gender_display }}</p>
+                <p><strong>رقم الهاتف:</strong> {{ appointment.patient.phone_number }}</p>
+                <p><strong>البريد الإلكتروني:</strong> {{ appointment.patient.email|default:"غير متوفر" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
